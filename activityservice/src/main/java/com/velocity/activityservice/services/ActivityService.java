@@ -7,9 +7,11 @@ import com.velocity.activityservice.repositories.ActivityRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,10 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
+    private final KafkaTemplate<String, Activity> kafkaTemplate;
+
+    @Value("${kafka.topic.name}")
+    private String topicname;
 
     private ActivityResponse mapToResponse(Activity activity) {
 
@@ -38,7 +44,6 @@ public class ActivityService {
     public ActivityResponse trackActivity(ActivityRequest request){
 
         boolean isValidUser = userValidationService.validateUser(request.getUserId());
-
         if(!isValidUser){
             throw new RuntimeException("Invalid user ID: " + request.getUserId());
         }
@@ -51,7 +56,16 @@ public class ActivityService {
                 .startTime(request.getStartTime())
                 .metadata(request.getMetadata())
                 .build();
-        return mapToResponse(activityRepository.save(activity));
+
+        Activity savedActivity = activityRepository.save(activity);
+
+        try {
+            kafkaTemplate.send(topicname, savedActivity.getUserId(), savedActivity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mapToResponse(savedActivity);
     }
 
 

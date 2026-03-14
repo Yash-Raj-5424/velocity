@@ -3,6 +3,7 @@ package com.velocity.activityservice.controller;
 import com.velocity.activityservice.dto.ActivityRequest;
 import com.velocity.activityservice.services.ActivityService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import com.velocity.activityservice.dto.ActivityResponse;
 import org.springframework.web.bind.annotation.PostMapping;
