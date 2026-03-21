@@ -1,10 +1,10 @@
-package com.velocity.userservice;
+package com.velocity.aiservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserserviceApplicationTests {
+class AiserviceApplicationTests {
 
 	@Test
 	void contextLoads() {

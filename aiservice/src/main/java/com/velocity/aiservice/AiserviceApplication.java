@@ -1,13 +1,13 @@
-package com.velocity.userservice;
+package com.velocity.aiservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserserviceApplication {
+public class AiserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserserviceApplication.class, args);
+		SpringApplication.run(AiserviceApplication.class, args);
 	}
 
 }
