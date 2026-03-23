@@ -6,6 +6,21 @@ spring:
       uri: mongodb://localhost:27017/airecommendation
       database: airecommendation
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: activity-processor-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.velocity.aiservice.model.Activity
+        spring.json.trust.packages: '*'
+
+kafka:
+  topic:
+    name: activity-events
+
 eureka:
   client:
     service-url:
