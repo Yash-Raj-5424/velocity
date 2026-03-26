@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    public static final String USER_SERVICE_BASE_URL = "http://USERSERVICE";
+    public static final String USER_SERVICE_BASE_URL = "http://USER-SERVICE";
 
     @Bean
     @LoadBalanced
