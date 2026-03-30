@@ -43,9 +43,11 @@ public class ActivityAIService {
                     .path("text");
 
             String jsonContent = textNode.asText()
-                    .replaceAll("```json    \\n", "")
-                    .replaceAll("\\n```", "")
+                    .replaceAll("(?s)```json\\s*", "")
+                    .replaceAll("(?s)```\\s*", "")
                     .trim();
+
+//            log.info("Cleaned JSON content: {}", jsonContent);
 
             JsonNode analysisJson = mapper.readTree(jsonContent);
             JsonNode analysisNode = analysisJson.path("analysis");
@@ -127,7 +129,8 @@ public class ActivityAIService {
                 improvementsList.add(String.format("%s: %s", area, recommendation));
             });
         }
-        return improvementsList.isEmpty() ? Collections.singletonList("No specific improvements identified.")
+        return improvementsList.isEmpty() ?
+                Collections.singletonList("No specific improvements identified.")
                 : improvementsList;
     }
 
