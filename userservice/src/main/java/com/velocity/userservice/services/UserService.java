@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.time.LocalDateTime;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -24,6 +26,8 @@ public class UserService {
         response.setFirstName(savedUser.getFirstName());
         response.setLastName(savedUser.getLastName());
         response.setEmail(savedUser.getEmail());
+        response.setCreatedAt(savedUser.getCreatedAt());
+        response.setUpdatedAt(savedUser.getUpdatedAt());
         return response;
     }
 
@@ -37,22 +41,24 @@ public class UserService {
     public UserResponse register(UserRegisterdto request) {
 
         if(userRepository.existsByEmail(request.getEmail())){
-            throw new RuntimeException("Email already in use");
+            User existingUser = userRepository.findByEmail(request.getEmail());
+            return mapToResponse(existingUser);
         }
-        User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
 
-        User savedUser = userRepository.save(user);
-        return mapToResponse(savedUser);
-
+        User newUser = User.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        return mapToResponse(userRepository.save(newUser));
     }
 
 
     public Boolean existById(String id) {
         log.info("Checking existence of user with ID: {}", id);
-        return userRepository.existsById(id);
+        return userRepository.existsByKeycloakId(id);
     }
 }
