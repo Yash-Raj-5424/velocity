@@ -26,6 +26,7 @@ public class UserService {
         response.setFirstName(savedUser.getFirstName());
         response.setLastName(savedUser.getLastName());
         response.setEmail(savedUser.getEmail());
+        response.setKeycloakId(savedUser.getKeycloakId());
         response.setCreatedAt(savedUser.getCreatedAt());
         response.setUpdatedAt(savedUser.getUpdatedAt());
         return response;
@@ -49,6 +50,7 @@ public class UserService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
+                .keycloakId(request.getKeycloakId())
                 .password(request.getPassword())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())

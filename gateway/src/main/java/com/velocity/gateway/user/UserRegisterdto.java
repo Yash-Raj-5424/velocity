@@ -1,4 +1,4 @@
-package com.velocity.userservice.dto;
+package com.velocity.gateway.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
